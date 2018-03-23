@@ -19,6 +19,7 @@ type job struct {
 	Queue string   `json:"queue,omitempty"`
 	Class string   `json:"class"`
 	Args  []jobArg `json:"args"`
+	Retry bool     `json:"retry"`
 }
 
 func Register(name string, driver driver.Enqueuer) {
@@ -49,7 +50,7 @@ func (enqueuer *RedisEnqueuer) Enqueue(queue, jobClass string, args ...jobArg) (
 		args = append(make([]jobArg, 0), make(map[string]jobArg, 0))
 	}
 
-	jobJSON, err := json.Marshal(&job{Class: jobClass, Args: args})
+	jobJSON, err := json.Marshal(&job{Class: jobClass, Args: args, Retry: true})
 	if err != nil {
 		return -1, err
 	}
@@ -65,7 +66,7 @@ func (enqueuer *RedisEnqueuer) EnqueueIn(delay time.Duration, queue, jobClass st
 		args = append(make([]jobArg, 0), make(map[string]jobArg, 0))
 	}
 
-	jobJSON, err := json.Marshal(&job{Class: jobClass, Args: args, Queue: queue})
+	jobJSON, err := json.Marshal(&job{Class: jobClass, Args: args, Queue: queue, Retry: true})
 	if err != nil {
 		return false, err
 	}
