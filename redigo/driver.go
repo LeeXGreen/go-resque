@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/LeeXGreen/go-resque"
+	"github.com/LeeXGreen/go-resque/driver"
 	"github.com/garyburd/redigo/redis"
-	"github.com/kavu/go-resque"
-	"github.com/kavu/go-resque/driver"
 )
 
 func init() {
